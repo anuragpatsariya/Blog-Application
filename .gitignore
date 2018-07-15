@@ -8,6 +8,7 @@
 
 # production
 /build
+/server/uploaded_images
 
 # misc
 .DS_Store

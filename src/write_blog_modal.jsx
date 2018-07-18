@@ -14,6 +14,8 @@ import Input from '@material-ui/core/Input';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Icon from '@material-ui/core/Icon';
 import SaveIcon from '@material-ui/icons/Save';
+//import FlatButton from '@material-ui/FlatButton';
+import axios from 'axios';
 
 function getModalStyle() {
   const top = 30;
@@ -54,9 +56,10 @@ const styles = theme => ({
 class WriteBlogModal extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name:'',title:'',category:''};
+    this.state = {name:'',title:'',category:'',content:''};
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
 
   }
@@ -77,11 +80,41 @@ class WriteBlogModal extends React.Component {
       [event.target.name]: event.target.value
     });}
 
+    handleSubmit(event){
+      console.log(this.state.name+", "+this.state.title+", "+this.state.category+", "+this.state.content);
+      console.log(this.uploadInput.files[0].name);
+      console.log(this.uploadInput.files[0]);
+      let formData = new FormData();
+      formData.append('name', this.state.name);
+      formData.append('title', this.state.title);
+      formData.append('category', this.state.category);
+      formData.append('content',this.state.content);
+      formData.append('filename',this.uploadInput.files[0].name);
+      formData.append('file',this.uploadInput.files[0]);
+      axios({
+        method: 'post',
+        url: '/new_blog',
+        data: formData,
+        config: { headers: {'Content-Type': 'multipart/form-data' }}
+      })
+      .then(response => {
+        console.log(response.data);
+        //ReactDOM.render(response.data, document.getElementById('blogParent'));
+      })
+      .catch(error => {
+        console.log(error.response)
+      });
+      //close the modal set modal elements to default blank
+      this.setState({ open: false });
+      this.state = {name:'',title:'',category:'',content:''};
+      //event.preventDefault();
+    }
+
     render() {
       const { classes } = this.props;
 
       return (
-        <form className={classes.container} noValidate autoComplete="off">
+        <form className={classes.container} noValidate autoComplete="off" onSubmit={this.handleSubmit} >
           <div>
             <Typography gutterBottom>Start Writing your Blog here</Typography>
             <Button onClick={this.handleOpen}>Open Modal</Button>
@@ -115,13 +148,15 @@ class WriteBlogModal extends React.Component {
                   margin="normal"
                   />
 
-                <InputLabel htmlFor="age-simple">Category</InputLabel>
+                <InputLabel htmlFor="category-simple">Category</InputLabel>
                 <Select
                   className={classes.dropDown}
                   value={this.state.category}
                   onChange={this.handleChange}
+                  name="category"
+                  id="category"
                   inputProps={{
-                    name: 'cateogry',
+                    name: 'category',
                     id: 'category-simple',
                   }}>
                   <MenuItem value="">
@@ -133,19 +168,17 @@ class WriteBlogModal extends React.Component {
                   <MenuItem value={'ai'}>Artificial Intelligence</MenuItem>
                   <MenuItem value={'others'}>Others..</MenuItem>
                 </Select>
-                
+
                 <input
                   accept="image/*"
                   className={classes.input}
                   id="raised-button-file"
                   multiple
                   type="file"
+                  ref={(ref) => { this.uploadInput = ref; }}
                   />
                 <label htmlFor="raised-button-file">
-                  <Button variant="contained" color="default" className={classes.button}>
-                    Upload
-                    <CloudUploadIcon className={classes.rightIcon} />
-                  </Button>
+
                 </label>
                 <TextField
                   id="content"
@@ -159,9 +192,11 @@ class WriteBlogModal extends React.Component {
                   onChange={this.handleChange}
                   margin="normal"
                   />
-                <Button variant="contained" className={classes.button}>
+                <Button variant="contained" className={classes.button} type='submit'
+                onClick={this.handleSubmit} >
                   Post it Now!
                 </Button>
+
               </div>
             </Modal>
           </div>

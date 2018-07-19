@@ -12,6 +12,16 @@ server.use(bodyParser.urlencoded({ extended: false }));
 server.use(fileUpload());
 server.use('/public', express.static(__dirname + '/public'));
 
+var data = {};
+server.get('/server/uploaded_images/:file', (req, res) => {
+
+  var file = req.params.file;
+  console.log(file);
+  res.sendFile(path.join(__dirname, '/uploaded_images', file));
+});
+
+
+
 server.post("/new_blog", function (request, response){
 var name = request.body.name;
 var title = request.body.title;
@@ -20,7 +30,8 @@ var category = request.body.category;
 var content = request.body.content;
 var filename = request.body.filename;
 var file = request.files.file;
-var blog_id = "blog_"+new Date().getTime();
+var created_at = new Date();
+var blog_id = "blog_"+created_at.getTime();
 console.log(name+", "+title+", "+category+", "+filename+", "+file);
 file.mv(`${__dirname}/uploaded_images/${blog_id}.jpg`, function(err) {
   if(err) {
@@ -32,6 +43,7 @@ file.mv(`${__dirname}/uploaded_images/${blog_id}.jpg`, function(err) {
     'title' : title,
     'category' : category,
     'content' : content,
+    'created_at' : created_at,
     'filename' : blog_id+".jpg"
   }
   var cluster = new couchbase.Cluster('127.0.0.1');
@@ -84,7 +96,7 @@ server.get("/all_blogs", function (request, response){
     }
     console.log("Connection Successful.");
     var N1qlQuery = couchbase.N1qlQuery;
-    var q = N1qlQuery.fromString('select name, title, content, filename, category from blog_data');
+    var q = N1qlQuery.fromString('select name, title, content, filename, category, created_at from blog_data');
     var count = 0;
     bucket.query(q, function (err, rows){
       console.log("Total Record count:  "+rows.length);

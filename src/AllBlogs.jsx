@@ -19,14 +19,15 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Image from 'material-ui-image';
 
 const styles = theme => ({
   card: {
-    maxWidth: 400,
+    maxWidth: 1000
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+    height: 10,
+    paddingTop: '25%', // 16:9
   },
   actions: {
     display: 'flex',
@@ -67,6 +68,7 @@ class AllBlogs extends React.Component{
         console.log(all_blogs[i].category);
         console.log(all_blogs[i].filename);
         console.log(all_blogs[i].content);
+        console.log(all_blogs[i].created_at);
       }
     })
     .catch(err => console.log(err))
@@ -90,11 +92,11 @@ class AllBlogs extends React.Component{
                     </IconButton>
                   }
                   title={blog.title}
-                  subheader="September 14, 2016"
+                  subheader={"Created At: "+blog.created_at}
                   />
                 <CardMedia
                   className={classes.media}
-                  image={'server/uploaded_images/'+blog.filename}
+                  image={"/server/uploaded_images/"+blog.filename}
                   title={blog.title}
                   />
                 <CardContent>

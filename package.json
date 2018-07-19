@@ -9,6 +9,7 @@
     "cors": "^2.8.4",
     "couchbase": "^2.4.6",
     "express-fileupload": "^0.4.0",
+    "material-ui-image": "^3.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-modal": "^3.4.5",

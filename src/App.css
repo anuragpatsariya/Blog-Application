@@ -1,16 +1,23 @@
 .App {
+  background-image: url("background.jpg");
   text-align: center;
   /* font-size: 35px; */
-  margin-top: 10%;
+  height: 250px;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 
-.writeablogbutton {
+.open_modal_button {
   text-align: center;
-  margin-top: 1%;
+  margin-top: 100px;
   margin:100px;
-  margin-left: 500px;
+  margin-left: 100px;
 }
 
 .App-title {
   font-size: 50px;
+}
+
+.write_label {
+  margin-bottom: 10px;
 }

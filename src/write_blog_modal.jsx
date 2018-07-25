@@ -116,8 +116,11 @@ class WriteBlogModal extends React.Component {
       return (
         <form className={classes.container} noValidate autoComplete="off" onSubmit={this.handleSubmit} >
           <div>
-            <Typography gutterBottom>Start Writing your Blog here</Typography>
-            <Button onClick={this.handleOpen}>Open Modal</Button>
+            <div className="App">
+              <Typography gutterBottom variant="headline" component="h3" className="write_label" >Start Writing your Blog here</Typography>
+              <Button className="open_modal_button" variant="contained" color="primary" onClick={this.handleOpen}>Click here to Write</Button>
+            </div>
+
             <Modal
               aria-labelledby="simple-modal-title"
               aria-describedby="simple-modal-description"

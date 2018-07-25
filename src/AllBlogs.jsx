@@ -100,6 +100,9 @@ class AllBlogs extends React.Component{
                   title={blog.title}
                   />
                 <CardContent>
+                  <Typography paragraph variant="body2">
+                    Author : {blog.name} 
+                  </Typography>
                 </CardContent>
                 <CardActions className={classes.actions} disableActionSpacing>
                   <IconButton aria-label="Add to favorites">
